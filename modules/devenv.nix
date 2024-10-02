@@ -83,7 +83,7 @@
             description = "Builds the project binary.";
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- gomod2nix
-              nix build .#snek
+              nix build .#snek-check
             '';
           };
           demo = {
