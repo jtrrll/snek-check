@@ -79,6 +79,12 @@
         };
 
         scripts = {
+          bench = {
+            description = "Runs a specified benchmark test.";
+            exec = ''
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -bench" -- go test ./... -bench="$1"
+            '';
+          };
           build = {
             description = "Builds the project binary.";
             exec = ''
@@ -90,6 +96,12 @@
             description = "Generates a demo GIF.";
             exec = ''
               ${pkgs.uutils-coreutils-noprefix}/bin/printf "TODO\n"
+            '';
+          };
+          fuzz = {
+            description = "Runs a specified fuzz test.";
+            exec = ''
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -fuzz" -- go test ./... -fuzz="$1"
             '';
           };
           lint = {
@@ -106,13 +118,13 @@
             description = "Runs the project.";
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- gomod2nix
-              nix run .#snek
+              nix run .#snek -- "$@"
             '';
           };
-          test = {
+          unit = {
             description = "Runs all unit tests.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go test" -- go test ./...
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test" -- go test ./...
             '';
           };
         };
