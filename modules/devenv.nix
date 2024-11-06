@@ -82,13 +82,15 @@
           bench = {
             description = "Runs a specified benchmark test.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -bench" -- go test ./... -bench="$1"
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -bench" -- \
+                go test ./... -bench="$1"
             '';
           };
           build = {
             description = "Builds the project binary.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- gomod2nix
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
+                gomod2nix
               nix build .#snek-check
             '';
           };
@@ -101,30 +103,38 @@
           fuzz = {
             description = "Runs a specified fuzz test.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -fuzz" -- go test ./... -fuzz="$1"
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -fuzz" -- \
+                go test ./... -fuzz="$1"
             '';
           };
           lint = {
             description = "Lints the project.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "alejandra ." -- alejandra .
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go mod tidy" -- go mod tidy
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go fmt" -- go fmt ./...
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go vet" -- go vet ./...
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "golangci-lint" -- golangci-lint run ./...
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "alejandra ." -- \
+                alejandra .
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go mod tidy" -- \
+                go mod tidy
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go fmt" -- \
+                go fmt ./...
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go vet" -- \
+                go vet ./...
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "golangci-lint" -- \
+                golangci-lint run ./...
             '';
           };
           run = {
             description = "Runs the project.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- gomod2nix
+              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
+                gomod2nix
               nix run .#snek -- "$@"
             '';
           };
           unit = {
             description = "Runs all unit tests.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test" -- go test ./...
+              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test" -- \
+                go test ./...
             '';
           };
         };
