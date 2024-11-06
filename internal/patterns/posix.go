@@ -8,7 +8,9 @@ import (
 var (
 	// Matches a valid POSIX filename according to
 	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_276.
-	validPosixFileName = regexp.MustCompile(`^[a-zA-Z0-9._][a-zA-Z0-9._\-]*$`)
+	// The length limitation is enforced by file systems rather than POSIX,
+	// but many file systems have a similar limit.
+	validPosixFileName = regexp.MustCompile(`^[a-zA-Z0-9._][a-zA-Z0-9._\-]{0,254}$`)
 
 	// Matches characters that are not valid in POSIX filenames according to
 	// https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_276.

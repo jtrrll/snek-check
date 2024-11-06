@@ -8,6 +8,7 @@ import (
 )
 
 // Iterates over a file tree, only producing paths that match the given matcher.
+// The iterator is guaranteed to yield parent directories before their children.
 func IterTree(fileSystem billy.Filesystem, match Matcher, p Path) iter.Seq2[Path, fs.FileInfo] {
 	return func(yield func(path Path, fileInfo fs.FileInfo) bool) {
 		// Process this path
