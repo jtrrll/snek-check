@@ -1,12 +1,35 @@
 package patterns_test
 
 import (
-	"snek-check/internal/patterns"
+	"snekcheck/internal/patterns"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func BenchmarkPosix(b *testing.B) {
+	b.Run("IsPosixFileName()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.IsPosixFileName("Bench mark")
+		}
+	})
+	b.Run("ToPosixFileName()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.ToPosixFileName("Bench mark")
+		}
+	})
+}
+
+func FuzzPosix(f *testing.F) {
+	f.Fuzz(func(t *testing.T, input string) {
+		output := patterns.ToPosixFileName(input)
+		assert.True(t, patterns.IsPosixFileName(output))
+		if patterns.IsPosixFileName(input) {
+			assert.Equal(t, input, output)
+		}
+	})
+}
 
 func TestPosix(t *testing.T) {
 	t.Parallel()
@@ -59,7 +82,7 @@ func TestPosix(t *testing.T) {
 				output string
 			}{
 				{input: "lol#$", output: "lol"},
-				{input: "spaced  name", output: "spaced_name"},
+				{input: "spaced  name", output: "spaced__name"},
 				{input: "__012 345.md", output: "__012_345.md"},
 			}
 			for _, tc := range testCases {
@@ -72,18 +95,5 @@ func TestPosix(t *testing.T) {
 				})
 			}
 		})
-	})
-}
-
-func BenchmarkPosix(b *testing.B) {
-	b.Run("IsPosixFileName()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.IsPosixFileName("Bench mark")
-		}
-	})
-	b.Run("ToPosixFileName()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.ToPosixFileName("Bench mark")
-		}
 	})
 }

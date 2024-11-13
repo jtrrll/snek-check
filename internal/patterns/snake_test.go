@@ -1,18 +1,43 @@
 package patterns_test
 
 import (
-	"snek-check/internal/patterns"
+	"snekcheck/internal/patterns"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
+func BenchmarkSnakeCase(b *testing.B) {
+	b.Run("IsSnakeCase()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.IsSnakeCase("Bench mark")
+		}
+	})
+	b.Run("ToSnakeCase()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.ToSnakeCase("Bench mark")
+		}
+	})
+}
+
+func FuzzSnakeCase(f *testing.F) {
+	f.Fuzz(func(t *testing.T, input string) {
+		output := patterns.ToSnakeCase(input)
+		assert.True(t, patterns.IsSnakeCase(output))
+		if patterns.IsSnakeCase(input) {
+			assert.Equal(t, input, output)
+		}
+	})
+}
+
 func TestSnakeCase(t *testing.T) {
 	t.Parallel()
 	t.Run("IsSnakeCase()", func(t *testing.T) {
 		t.Run("identifies valid snake case", func(t *testing.T) {
 			testCases := []string{
+				"",
+				"__",
 				"snake",
 				"_snake_case_",
 				"012_345",
@@ -41,6 +66,8 @@ func TestSnakeCase(t *testing.T) {
 	t.Run("ToSnakeCase()", func(t *testing.T) {
 		t.Run("does not change valid snake case", func(t *testing.T) {
 			testCases := []string{
+				"",
+				"__",
 				"snake",
 				"snake_case_123",
 				"_do_not_change_this_please_",
@@ -59,8 +86,7 @@ func TestSnakeCase(t *testing.T) {
 			}{
 				{input: "LOL.go", output: "lol.go"},
 				{input: "snake Case", output: "snake_case"},
-				{input: " SNake   caSE ", output: "_snake_case_"},
-				{input: "__012 345", output: "_012_345"},
+				{input: " SNake   caSE ", output: "_snake___case_"},
 			}
 			for _, tc := range testCases {
 				t.Run(tc.input, func(t *testing.T) {
@@ -72,18 +98,5 @@ func TestSnakeCase(t *testing.T) {
 				})
 			}
 		})
-	})
-}
-
-func BenchmarkSnakeCase(b *testing.B) {
-	b.Run("IsSnakeCase()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.IsSnakeCase("Bench mark")
-		}
-	})
-	b.Run("ToSnakeCase()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.ToSnakeCase("Bench mark")
-		}
 	})
 }

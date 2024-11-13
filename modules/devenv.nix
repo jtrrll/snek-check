@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  self,
+  ...
+}: {
   imports = [
     inputs.devenv.flakeModule
   ];
@@ -14,7 +18,7 @@
         inputs.env-help.devenvModule
       ];
       shells.default = let
-        buildInputs = config.packages.snek-check.nativeBuildInputs;
+        buildInputs = config.packages.snekcheck.nativeBuildInputs;
         goPkg = lib.findFirst (pkg: builtins.match "go" pkg.pname != null) pkgs.go buildInputs;
       in {
         enterShell = ''
@@ -74,16 +78,21 @@
             };
             shellcheck.enable = true;
             shfmt.enable = true;
+            snekcheck = {
+              enable = true;
+              entry = "${self.packages.${system}.snekcheck}/bin/snekcheck";
+              name = "snekcheck";
+            };
             statix.enable = true;
           };
         };
 
         scripts = {
           bench = {
-            description = "Runs a specified benchmark test.";
+            description = "Runs all benchmark tests.";
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -bench" -- \
-                go test ./... -bench="$1"
+                go test ./... -bench=.
             '';
           };
           build = {
@@ -91,20 +100,13 @@
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
                 gomod2nix
-              nix build .#snek-check
+              nix build .#snekcheck
             '';
           };
           demo = {
             description = "Generates a demo GIF.";
             exec = ''
               ${pkgs.uutils-coreutils-noprefix}/bin/printf "TODO\n"
-            '';
-          };
-          fuzz = {
-            description = "Runs a specified fuzz test.";
-            exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -fuzz" -- \
-                go test ./... -fuzz="$1"
             '';
           };
           lint = {
@@ -127,7 +129,7 @@
             exec = ''
               ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
                 gomod2nix
-              nix run .#snek -- "$@"
+              nix run .#snekcheck -- "$@"
             '';
           };
           unit = {

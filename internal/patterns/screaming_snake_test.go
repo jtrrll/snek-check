@@ -1,18 +1,43 @@
 package patterns_test
 
 import (
-	"snek-check/internal/patterns"
+	"snekcheck/internal/patterns"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
+func BenchmarkScreamingSnakeCase(b *testing.B) {
+	b.Run("IsScreamingSnakeCase()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.IsScreamingSnakeCase("Bench mark")
+		}
+	})
+	b.Run("ToScreamingSnakeCase()", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			patterns.ToScreamingSnakeCase("Bench mark")
+		}
+	})
+}
+
+func FuzzScreamingSnakeCase(f *testing.F) {
+	f.Fuzz(func(t *testing.T, input string) {
+		output := patterns.ToScreamingSnakeCase(input)
+		assert.True(t, patterns.IsScreamingSnakeCase(output))
+		if patterns.IsScreamingSnakeCase(input) {
+			assert.Equal(t, input, output)
+		}
+	})
+}
+
 func TestScreamingSnakeCase(t *testing.T) {
 	t.Parallel()
 	t.Run("IsScreamingSnakeCase()", func(t *testing.T) {
 		t.Run("identifies valid screaming snake case", func(t *testing.T) {
 			testCases := []string{
+				"",
+				"__",
 				"SNAKE",
 				"_SNAKE_CASE_",
 				"012_345",
@@ -41,6 +66,8 @@ func TestScreamingSnakeCase(t *testing.T) {
 	t.Run("ToScreamingSnakeCase()", func(t *testing.T) {
 		t.Run("does not change valid screaming snake case", func(t *testing.T) {
 			testCases := []string{
+				"",
+				"__",
 				"SNAKE",
 				"SNAKE_CASE_123",
 				"_DO_NOT_CHANGE_THIS_PLEASE_",
@@ -59,8 +86,7 @@ func TestScreamingSnakeCase(t *testing.T) {
 			}{
 				{input: "lol#$", output: "LOL"},
 				{input: "snake Case", output: "SNAKE_CASE"},
-				{input: " SNake   caSE ", output: "_SNAKE_CASE_"},
-				{input: "__012 345", output: "_012_345"},
+				{input: " SNake   caSE ", output: "_SNAKE___CASE_"},
 			}
 			for _, tc := range testCases {
 				t.Run(tc.input, func(t *testing.T) {
@@ -72,18 +98,5 @@ func TestScreamingSnakeCase(t *testing.T) {
 				})
 			}
 		})
-	})
-}
-
-func BenchmarkScreamingSnakeCase(b *testing.B) {
-	b.Run("IsScreamingSnakeCase()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.IsScreamingSnakeCase("Bench mark")
-		}
-	})
-	b.Run("ToScreamingSnakeCase()", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			patterns.ToScreamingSnakeCase("Bench mark")
-		}
 	})
 }

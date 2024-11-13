@@ -6,9 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for submitting a bug report! It helps make `snek-check` better.
+        Thank you for submitting a bug report! It helps make `snekcheck` better.
 
-        Make sure you are using the latest version of `snek-check`.
+        Make sure you are using the latest version of `snekcheck`.
         The bug you are experiencing may already have been fixed.
 
         Please try to include as much information as possible!
