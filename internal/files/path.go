@@ -14,8 +14,8 @@ const pathSeparator = string(os.PathSeparator)
 type Path []string
 
 // Constructs a new Path by splitting the elements with an OS-specific separator.
-func NewPath(s string) Path {
-	return strings.Split(s, pathSeparator)
+func NewPath(path string) Path {
+	return strings.Split(path, pathSeparator)
 }
 
 // Returns the last element of the path. Will panic if the path is empty.

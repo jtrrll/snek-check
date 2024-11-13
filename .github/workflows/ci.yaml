@@ -27,7 +27,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
       - name: Build
-        run: nix build .#snek-check
+        run: nix build .#snekcheck
   lint:
     name: Lint
     runs-on: ubuntu-latest

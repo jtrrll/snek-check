@@ -8,11 +8,11 @@ var (
 	// Matches several lowercase letters.
 	lowers = regexp.MustCompile(`[a-z]+`)
 
-	// Matches several separators.
-	separators = regexp.MustCompile(`[_\- ]+`)
+	// Matches a single separator.
+	separators = regexp.MustCompile(`[_\- ]`)
 
-	// Matches one or more spaces.
-	spaces = regexp.MustCompile(`[ ]+`)
+	// Matches a single space.
+	spaces = regexp.MustCompile(`[ ]`)
 
 	// Matches several uppercase letters.
 	uppers = regexp.MustCompile(`[A-Z]+`)

@@ -1,8 +1,8 @@
 {
   perSystem = {config, ...}: {
     apps = {
-      snek = {
-        program = "${config.packages.snek-check}/bin/snek";
+      snekcheck = {
+        program = "${config.packages.snekcheck}/bin/snekcheck";
         type = "app";
       };
     };

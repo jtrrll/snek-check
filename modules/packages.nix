@@ -1,9 +1,9 @@
 {inputs, ...}: {
   perSystem = {system, ...}: {
     packages = {
-      snek-check = inputs.gomod2nix.legacyPackages.${system}.buildGoApplication {
+      snekcheck = inputs.gomod2nix.legacyPackages.${system}.buildGoApplication {
         modules = ../gomod2nix.toml;
-        pname = "snek-check";
+        pname = "snekcheck";
         src = ../.;
         version = "0.0";
       };
