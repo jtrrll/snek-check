@@ -7,6 +7,9 @@ import (
 	"github.com/go-git/go-billy/v5"
 )
 
+// A Matcher determines if a file path matches implementation-specific constraints or not.
+type Matcher func(path Path, isDir bool) bool
+
 // Iterates over a file tree, only producing paths that match the given matcher.
 // The iterator is guaranteed to yield parent directories before their children.
 func IterTree(fileSystem billy.Filesystem, match Matcher, p Path) iter.Seq2[Path, fs.FileInfo] {
