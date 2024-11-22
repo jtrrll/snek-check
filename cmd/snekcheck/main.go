@@ -11,11 +11,9 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
-	"path/filepath"
 	"snekcheck/internal/files"
-	"snekcheck/internal/patterns"
-	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
@@ -25,116 +23,75 @@ import (
 
 var (
 	// A colorful logger.
+	// TODO: Use a better view solution.
 	logger = configureLogger()
 )
 
 // CLI flags.
+// TODO: Use a better flag library.
 var (
 	fix = flag.Bool("fix", false, "Whether snekcheck should attempt to correct invalid filenames")
 )
 
-// A runtime configuration for snek.
-type config struct {
-	fix        bool
-	fileSystem billy.Filesystem
-	gitIgnore  files.GitIgnore
-	paths      []files.Path
-}
-
 // The snekcheck CLI.
 // Will exit with a non-zero exit code upon failure.
 func main() {
+	// Initialize filesystem.
 	rootFs := osfs.New("/")
+	pwd, pwdErr := os.Getwd()
+	if pwdErr != nil {
+		panic("could not determine present working directory")
+	}
 
+	// Parse CLI flags and args.
 	flag.Parse()
-	relativePaths := flag.Args()
-	if len(relativePaths) == 0 {
-		logger.Error("no files or directories specified")
-		os.Exit(1)
+
+	paths, pathsErr := absPaths(rootFs, pwd, flag.Args())
+	if pathsErr != nil {
+		logger.Error(pathsErr)
+		exit(1)
+	}
+	if len(paths) == 0 {
+		logger.Error("no valid files or directories specified")
+		exit(1)
 	}
 
-	absolutePaths := make([]files.Path, len(relativePaths))
-	for i, path := range relativePaths {
-		absolutePath, absoluteErr := filepath.Abs(path)
-		if absoluteErr != nil {
-			logger.Error(absoluteErr)
-			os.Exit(1)
-		}
-		_, statErr := rootFs.Stat(absolutePath)
-		if statErr != nil {
-			logger.Error(absoluteErr)
-			os.Exit(1)
-		}
-		absolutePaths[i] = files.NewPath(absolutePath)
+	// Run sneckcheck.
+	if *fix {
+		Fix(rootFs, paths)
+		exit(0)
 	}
 
-	config := config{
-		fix:        *fix,
-		fileSystem: rootFs,
-		gitIgnore:  loadGlobalGitIgnore(rootFs),
-		paths:      absolutePaths,
+	_, invalidPaths := Check(rootFs, paths)
+	if len(invalidPaths) != 0 {
+		exit(1)
 	}
-	os.Exit(SnekCheck(config))
+	exit(0)
 }
 
-// Recursively lints all provided file paths to ensure all filenames are snake_case.
-func SnekCheck(config config) (exitCode int) {
-	match := func(path files.Path, isDir bool) bool {
-		return !config.gitIgnore.Match(path, isDir)
+// Converts relative paths to separated, absolute paths.
+// Errors if any provided path does not exist.
+func absPaths(fs billy.Filesystem, pwd string, relPaths []string) (absPaths []files.Path, err error) {
+	if fs == nil {
+		panic("invalid filesystem")
 	}
 
-	for _, path := range config.paths {
-		for path, fileInfo := range files.IterTree(config.fileSystem, match, path) {
-			if fileInfo.IsDir() {
-				moreIgnores, ignoreErr := files.ParseGitIgnore(config.fileSystem, path)
-				if ignoreErr != nil {
-					moreIgnores = nil
-				}
-				config.gitIgnore = append(config.gitIgnore, moreIgnores...)
-			}
-
-			if isValidFileName(path.Base()) {
-				logger.Print("", "VALID", path)
-				continue
-			}
-
-			if !config.fix {
-				exitCode = 1
-				logger.Print("", "INVALID", path)
-				continue
-			}
-
-			var newPath files.Path
-			newPath = append(append(newPath, path.Parent()...), patterns.ToSnakeCase(path.Base()))
-			renameErr := config.fileSystem.Rename(path.String(), newPath.String())
-			if renameErr != nil {
-				exitCode = 1
-				logger.Error(renameErr)
-				return
-			}
-			logger.Print("", "FIXED", path)
+	absPaths = make([]files.Path, len(relPaths))
+	for i, relPath := range relPaths {
+		absPath := fs.Join(pwd, relPath)
+		_, statErr := fs.Stat(absPath)
+		if statErr != nil {
+			err = fmt.Errorf("no such file or directory: %s", relPath)
+			return
 		}
+		absPaths[i] = files.NewPath(absPath)
 	}
 	return
 }
 
-// Determines if a filename is valid according to snekcheck's opinion.
-func isValidFileName(name string) bool {
-	if !patterns.IsPosixFileName(name) {
-		return false
-	}
-
-	if patterns.IsSnakeCase(name) {
-		return true
-	}
-
-	name, extension := splitExtension(name)
-	return patterns.IsScreamingSnakeCase(name) && patterns.IsSnakeCase(extension)
-}
-
 // Configures the CLI logger.
-func configureLogger() *log.Logger {
-	l := log.New(os.Stderr)
+func configureLogger() (logger *log.Logger) {
+	logger = log.New(os.Stderr)
 	styles := log.DefaultStyles()
 	styles.Keys["INVALID"] = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#f44747"))
 	styles.Values["INVALID"] = lipgloss.NewStyle()
@@ -142,8 +99,26 @@ func configureLogger() *log.Logger {
 	styles.Values["VALID"] = lipgloss.NewStyle()
 	styles.Keys["FIXED"] = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#dcdcaa"))
 	styles.Values["FIXED"] = lipgloss.NewStyle()
-	l.SetStyles(styles)
-	return l
+	logger.SetStyles(styles)
+	return
+}
+
+// Terminates the current program with the given status code.
+// Panics if the exit code is not in the range [0, 125].
+func exit(code uint8) {
+	if code > 125 {
+		panic(fmt.Errorf("invalid exit code: %d", code))
+	}
+	os.Exit(int(code))
+}
+
+// Parses gitignore patterns in a single directory
+func parseGitIgnorePatterns(fs billy.Filesystem, path files.Path) files.GitIgnore {
+	patterns, ignoreErr := files.ParseGitIgnore(fs, path)
+	if ignoreErr != nil {
+		patterns = nil
+	}
+	return patterns
 }
 
 // Parses the list of global gitignore patterns.
@@ -155,13 +130,4 @@ func loadGlobalGitIgnore(fs billy.Filesystem) files.GitIgnore {
 		globalIgnorePatterns = nil
 	}
 	return globalIgnorePatterns
-}
-
-// Splits the extension from a filename.
-func splitExtension(name string) (string, string) {
-	lastIndex := strings.LastIndex(name, ".")
-	if lastIndex == -1 {
-		return name, ""
-	}
-	return name[:lastIndex], name[lastIndex:]
 }
