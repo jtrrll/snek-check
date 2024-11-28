@@ -1,5 +1,5 @@
 schema = 4
-vendorModulesTxt = "# github.com/aymanbagabas/go-osc52/v2 v2.0.1\n## explicit; go 1.16\ngithub.com/aymanbagabas/go-osc52/v2\n# github.com/charmbracelet/lipgloss v1.0.0\n## explicit; go 1.18\ngithub.com/charmbracelet/lipgloss\n# github.com/charmbracelet/log v0.4.0\n## explicit; go 1.19\ngithub.com/charmbracelet/log\n# github.com/charmbracelet/x/ansi v0.4.2\n## explicit; go 1.18\ngithub.com/charmbracelet/x/ansi\ngithub.com/charmbracelet/x/ansi/parser\n# github.com/cyphar/filepath-securejoin v0.2.5\n## explicit; go 1.13\ngithub.com/cyphar/filepath-securejoin\n# github.com/davecgh/go-spew v1.1.1\n## explicit\ngithub.com/davecgh/go-spew/spew\n# github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376\n## explicit; go 1.13\ngithub.com/go-git/gcfg\ngithub.com/go-git/gcfg/scanner\ngithub.com/go-git/gcfg/token\ngithub.com/go-git/gcfg/types\n# github.com/go-git/go-billy/v5 v5.6.0\n## explicit; go 1.20\ngithub.com/go-git/go-billy/v5\ngithub.com/go-git/go-billy/v5/helper/chroot\ngithub.com/go-git/go-billy/v5/helper/polyfill\ngithub.com/go-git/go-billy/v5/memfs\ngithub.com/go-git/go-billy/v5/osfs\ngithub.com/go-git/go-billy/v5/util\n# github.com/go-git/go-git/v5 v5.12.0\n## explicit; go 1.19\ngithub.com/go-git/go-git/v5/internal/path_util\ngithub.com/go-git/go-git/v5/plumbing/format/config\ngithub.com/go-git/go-git/v5/plumbing/format/gitignore\ngithub.com/go-git/go-git/v5/utils/ioutil\n# github.com/go-logfmt/logfmt v0.6.0\n## explicit; go 1.17\ngithub.com/go-logfmt/logfmt\n# github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99\n## explicit\ngithub.com/jbenet/go-context/io\n# github.com/lucasb-eyer/go-colorful v1.2.0\n## explicit; go 1.12\ngithub.com/lucasb-eyer/go-colorful\n# github.com/mattn/go-isatty v0.0.20\n## explicit; go 1.15\ngithub.com/mattn/go-isatty\n# github.com/mattn/go-runewidth v0.0.15\n## explicit; go 1.9\ngithub.com/mattn/go-runewidth\n# github.com/muesli/termenv v0.15.2\n## explicit; go 1.17\ngithub.com/muesli/termenv\n# github.com/pmezard/go-difflib v1.0.0\n## explicit\ngithub.com/pmezard/go-difflib/difflib\n# github.com/rivo/uniseg v0.4.7\n## explicit; go 1.18\ngithub.com/rivo/uniseg\n# github.com/stretchr/testify v1.9.0\n## explicit; go 1.17\ngithub.com/stretchr/testify/assert\ngithub.com/stretchr/testify/require\n# golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56\n## explicit; go 1.20\ngolang.org/x/exp/constraints\ngolang.org/x/exp/slices\ngolang.org/x/exp/slog\ngolang.org/x/exp/slog/internal\ngolang.org/x/exp/slog/internal/buffer\n# golang.org/x/net v0.27.0\n## explicit; go 1.18\ngolang.org/x/net/context\n# golang.org/x/sys v0.24.0\n## explicit; go 1.18\ngolang.org/x/sys/unix\ngolang.org/x/sys/windows\n# gopkg.in/warnings.v0 v0.1.2\n## explicit\ngopkg.in/warnings.v0\n# gopkg.in/yaml.v3 v3.0.1\n## explicit\ngopkg.in/yaml.v3\n"
+vendorModulesTxt = "# github.com/aymanbagabas/go-osc52/v2 v2.0.1\n## explicit; go 1.16\ngithub.com/aymanbagabas/go-osc52/v2\n# github.com/charmbracelet/lipgloss v1.0.0\n## explicit; go 1.18\ngithub.com/charmbracelet/lipgloss\n# github.com/charmbracelet/log v0.4.0\n## explicit; go 1.19\ngithub.com/charmbracelet/log\n# github.com/charmbracelet/x/ansi v0.5.2\n## explicit; go 1.18\ngithub.com/charmbracelet/x/ansi\ngithub.com/charmbracelet/x/ansi/parser\n# github.com/cyphar/filepath-securejoin v0.3.4\n## explicit; go 1.21\ngithub.com/cyphar/filepath-securejoin\n# github.com/davecgh/go-spew v1.1.1\n## explicit\ngithub.com/davecgh/go-spew/spew\n# github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376\n## explicit; go 1.13\ngithub.com/go-git/gcfg\ngithub.com/go-git/gcfg/scanner\ngithub.com/go-git/gcfg/token\ngithub.com/go-git/gcfg/types\n# github.com/go-git/go-billy/v5 v5.6.0\n## explicit; go 1.20\ngithub.com/go-git/go-billy/v5\ngithub.com/go-git/go-billy/v5/helper/chroot\ngithub.com/go-git/go-billy/v5/helper/polyfill\ngithub.com/go-git/go-billy/v5/memfs\ngithub.com/go-git/go-billy/v5/osfs\ngithub.com/go-git/go-billy/v5/util\n# github.com/go-git/go-git/v5 v5.12.0\n## explicit; go 1.19\ngithub.com/go-git/go-git/v5/internal/path_util\ngithub.com/go-git/go-git/v5/plumbing/format/config\ngithub.com/go-git/go-git/v5/plumbing/format/gitignore\ngithub.com/go-git/go-git/v5/utils/ioutil\n# github.com/go-logfmt/logfmt v0.6.0\n## explicit; go 1.17\ngithub.com/go-logfmt/logfmt\n# github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99\n## explicit\ngithub.com/jbenet/go-context/io\n# github.com/lucasb-eyer/go-colorful v1.2.0\n## explicit; go 1.12\ngithub.com/lucasb-eyer/go-colorful\n# github.com/mattn/go-isatty v0.0.20\n## explicit; go 1.15\ngithub.com/mattn/go-isatty\n# github.com/mattn/go-runewidth v0.0.16\n## explicit; go 1.9\ngithub.com/mattn/go-runewidth\n# github.com/muesli/termenv v0.15.2\n## explicit; go 1.17\ngithub.com/muesli/termenv\n# github.com/pmezard/go-difflib v1.0.0\n## explicit\ngithub.com/pmezard/go-difflib/difflib\n# github.com/rivo/uniseg v0.4.7\n## explicit; go 1.18\ngithub.com/rivo/uniseg\n# github.com/stretchr/testify v1.10.0\n## explicit; go 1.17\ngithub.com/stretchr/testify/assert\ngithub.com/stretchr/testify/assert/yaml\ngithub.com/stretchr/testify/require\n# golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f\n## explicit; go 1.22.0\ngolang.org/x/exp/constraints\ngolang.org/x/exp/slices\ngolang.org/x/exp/slog\ngolang.org/x/exp/slog/internal\ngolang.org/x/exp/slog/internal/buffer\n# golang.org/x/net v0.31.0\n## explicit; go 1.18\ngolang.org/x/net/context\n# golang.org/x/sys v0.27.0\n## explicit; go 1.18\ngolang.org/x/sys/unix\ngolang.org/x/sys/windows\n# gopkg.in/warnings.v0 v0.1.2\n## explicit\ngopkg.in/warnings.v0\n# gopkg.in/yaml.v3 v3.0.1\n## explicit\ngopkg.in/yaml.v3\n"
 
 [mod]
   [mod."github.com/aymanbagabas/go-osc52/v2"]
@@ -12,11 +12,11 @@ vendorModulesTxt = "# github.com/aymanbagabas/go-osc52/v2 v2.0.1\n## explicit; g
     version = "v0.4.0"
     hash = "sha256-VQerB44vC646n3fe3haJ3DHa9L5+GRhCfDfm1p3QnZk="
   [mod."github.com/charmbracelet/x/ansi"]
-    version = "v0.4.2"
-    hash = "sha256-8MXyqHnzwGjl7z8ll8Tb5RQyj3ZhyK98ottgxRiBWjg="
+    version = "v0.5.2"
+    hash = "sha256-RyOsmGlPoInDALBL41sv/mLyjsQNjnYAx5Mh+LTfjuw="
   [mod."github.com/cyphar/filepath-securejoin"]
-    version = "v0.2.5"
-    hash = "sha256-Hb9fRUHnMJJwy7XuHRG2l0YiTKh/5jUz2YJVdYScIfE="
+    version = "v0.3.4"
+    hash = "sha256-I9dV5gtKk3hH39taAWxvvJEXMi4YoHSxeESVyjpl1MU="
   [mod."github.com/davecgh/go-spew"]
     version = "v1.1.1"
     hash = "sha256-nhzSUrE1fCkN0+RL04N4h8jWmRFPPPWbCuDc7Ss0akI="
@@ -42,8 +42,8 @@ vendorModulesTxt = "# github.com/aymanbagabas/go-osc52/v2 v2.0.1\n## explicit; g
     version = "v0.0.20"
     hash = "sha256-qhw9hWtU5wnyFyuMbKx+7RB8ckQaFQ8D+8GKPkN3HHQ="
   [mod."github.com/mattn/go-runewidth"]
-    version = "v0.0.15"
-    hash = "sha256-WP39EU2UrQbByYfnwrkBDoKN7xzXsBssDq3pNryBGm0="
+    version = "v0.0.16"
+    hash = "sha256-NC+ntvwIpqDNmXb7aixcg09il80ygq6JAnW0Gb5b/DQ="
   [mod."github.com/muesli/termenv"]
     version = "v0.15.2"
     hash = "sha256-Eum/SpyytcNIchANPkG4bYGBgcezLgej7j/+6IhqoMU="
@@ -54,17 +54,17 @@ vendorModulesTxt = "# github.com/aymanbagabas/go-osc52/v2 v2.0.1\n## explicit; g
     version = "v0.4.7"
     hash = "sha256-rDcdNYH6ZD8KouyyiZCUEy8JrjOQoAkxHBhugrfHjFo="
   [mod."github.com/stretchr/testify"]
-    version = "v1.9.0"
-    hash = "sha256-uUp/On+1nK+lARkTVtb5RxlW15zxtw2kaAFuIASA+J0="
+    version = "v1.10.0"
+    hash = "sha256-fJ4gnPr0vnrOhjQYQwJ3ARDKPsOtA7d4olQmQWR+wpI="
   [mod."golang.org/x/exp"]
-    version = "v0.0.0-20240719175910-8a7402abbf56"
-    hash = "sha256-mHEPy0vbd/pFwq5ZAEKaehCeYVQLEFDGnXAoVgkCLPo="
+    version = "v0.0.0-20241108190413-2d47ceb2692f"
+    hash = "sha256-uRR1wFVGutfXAQIG69BD4g5Y8Ejw+ugw28F6ayu2BPY="
   [mod."golang.org/x/net"]
-    version = "v0.27.0"
-    hash = "sha256-GrlN5isYeEVrPZVAHK0MDQatttbnyfSPoWJHj0xqhjk="
+    version = "v0.31.0"
+    hash = "sha256-G+vGyCnn8jywmX3KvsIwhZkOv3+oAERNNeCeiQqfIL0="
   [mod."golang.org/x/sys"]
-    version = "v0.24.0"
-    hash = "sha256-P0fsA+qy9taYHWPTtCs5XmrJ1i8tWfvkno+PNuc2elw="
+    version = "v0.27.0"
+    hash = "sha256-BXQcF9RrJ55Pq7Nl67TeFGkgkyuKkQ8hHKN4/L4ggWc="
   [mod."gopkg.in/warnings.v0"]
     version = "v0.1.2"
     hash = "sha256-ATVL9yEmgYbkJ1DkltDGRn/auGAjqGOfjQyBYyUo8s8="
