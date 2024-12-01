@@ -22,7 +22,12 @@
         goPkg = lib.findFirst (pkg: builtins.match "go" pkg.pname != null) pkgs.go buildInputs;
       in {
         enterShell = ''
-          printf "\n" | ${pkgs.lolcat}/bin/lolcat
+          printf "   ▄▄▄▄▄    ▄   ▄███▄   █  █▀ ▄█▄     ▄  █ ▄███▄   ▄█▄    █  █▀
+            █     ▀▄   █  █▀   ▀  █▄█   █▀ ▀▄  █   █ █▀   ▀  █▀ ▀▄  █▄█
+          ▄  ▀▀▀▀▄ ██   █ ██▄▄    █▀▄   █   ▀  ██▀▀█ ██▄▄    █   ▀  █▀▄
+           ▀▄▄▄▄▀  █ █  █ █▄   ▄▀ █  █  █▄  ▄▀ █   █ █▄   ▄▀ █▄  ▄▀ █  █
+                   █  █ █ ▀███▀     █   ▀███▀     █  ▀███▀   ▀███▀    █
+                   █   ██          ▀             ▀                   ▀\n" | ${pkgs.lolcat}/bin/lolcat
           printf "\033[0;1;36mDEVSHELL ACTIVATED\033[0m\n"
         '';
 
@@ -39,7 +44,6 @@
         packages =
           [
             inputs.gomod2nix.legacyPackages.${system}.gomod2nix
-            pkgs.commitizen
             pkgs.golangci-lint
           ]
           ++ buildInputs;
@@ -54,7 +58,6 @@
               stages = ["pre-commit"];
             };
             check-yaml.enable = true;
-            commitizen.enable = true;
             deadnix.enable = true;
             detect-private-keys = {
               enable = true;
