@@ -36,10 +36,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Lint Nix code
-        run: nix develop --impure -c alejandra -c .
-      - name: Lint Go code
-        run: nix develop --impure -c golangci-lint run ./...
+      - name: Lint
+        run: nix develop --impure -c lint
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -48,6 +46,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - name: Test
-        run: nix develop --impure -c go test ./...
+      - name: Unit Test
+        run: nix develop --impure -c unit
+      - name: End-to-end Test
+        run: nix develop --impure -c e2e
 ...

@@ -16,6 +16,7 @@ result
 # Test output
 *.test
 testdata/
+.shellspec-*
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out

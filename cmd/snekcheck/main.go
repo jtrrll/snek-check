@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"os"
 	"snekcheck/internal/files"
+	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/log"
@@ -69,19 +70,22 @@ func main() {
 	exit(0)
 }
 
-// Converts relative paths to separated, absolute paths.
+// Converts potentially relative paths to separated, absolute paths.
 // Errors if any provided path does not exist.
-func absPaths(fs billy.Filesystem, pwd string, relPaths []string) (absPaths []files.Path, err error) {
+func absPaths(fs billy.Filesystem, pwd string, paths []string) (absPaths []files.Path, err error) {
 	if fs == nil {
 		panic("invalid filesystem")
 	}
 
-	absPaths = make([]files.Path, len(relPaths))
-	for i, relPath := range relPaths {
-		absPath := fs.Join(pwd, relPath)
+	absPaths = make([]files.Path, len(paths))
+	for i, path := range paths {
+		absPath := path
+		if !strings.HasPrefix(path, "/") {
+			absPath = fs.Join(pwd, path)
+		}
 		_, statErr := fs.Stat(absPath)
 		if statErr != nil {
-			err = fmt.Errorf("no such file or directory: %s", relPath)
+			err = fmt.Errorf("no such file or directory: %s", path)
 			return
 		}
 		absPaths[i] = files.NewPath(absPath)

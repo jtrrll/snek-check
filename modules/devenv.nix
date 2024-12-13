@@ -41,13 +41,6 @@
           nix.enable = true;
         };
 
-        packages =
-          [
-            inputs.gomod2nix.legacyPackages.${system}.gomod2nix
-            pkgs.golangci-lint
-          ]
-          ++ buildInputs;
-
         pre-commit = {
           default_stages = ["pre-push"];
           hooks = {
@@ -79,8 +72,10 @@
               enable = true;
               stages = ["pre-commit"];
             };
-            shellcheck.enable = true;
-            shfmt.enable = true;
+            shellcheck = {
+              args = ["--exclude=SC2034,SC2154"];
+              enable = true;
+            };
             snekcheck = {
               enable = true;
               entry = "${self.packages.${system}.snekcheck}/bin/snekcheck";
@@ -94,16 +89,14 @@
           bench = {
             description = "Runs all benchmark tests.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test -bench" -- \
-                go test ./... -bench=.
+              ${goPkg}/bin/go test "$DEVENV_ROOT"/... -bench=.
             '';
           };
           build = {
             description = "Builds the project binary.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
-                gomod2nix
-              nix build .#snekcheck
+              ${inputs.gomod2nix.legacyPackages.${system}.gomod2nix}/bin/gomod2nix && \
+              nix build "$DEVENV_ROOT"#snekcheck
             '';
           };
           demo = {
@@ -112,34 +105,36 @@
               ${pkgs.uutils-coreutils-noprefix}/bin/printf "TODO\n"
             '';
           };
+          e2e = {
+            description = "Runs all end-to-end tests.";
+            exec = ''
+              build && \
+              ${pkgs.shellspec}/bin/shellspec --no-warning-as-failure "$DEVENV_ROOT"
+            '';
+          };
           lint = {
             description = "Lints the project.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "alejandra ." -- \
-                alejandra .
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go mod tidy" -- \
-                go mod tidy
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go fmt" -- \
-                go fmt ./...
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "go vet" -- \
-                go vet ./...
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "golangci-lint" -- \
-                golangci-lint run ./...
+              nix fmt "$DEVENV_ROOT" -- --quiet
+              ${goPkg}/bin/go mod tidy && \
+              ${goPkg}/bin/go fmt "$DEVENV_ROOT"/... && \
+              ${goPkg}/bin/go vet "$DEVENV_ROOT"/... && \
+              ${pkgs.golangci-lint}/bin/golangci-lint run "$DEVENV_ROOT"/... && \
+              ${pkgs.findutils}/bin/find "$DEVENV_ROOT"/spec -type f -name "*.sh" \
+                -exec "${pkgs.shellcheck}/bin/shellcheck" "--exclude=SC2034,SC2154" {} \;
             '';
           };
           run = {
             description = "Runs the project.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-error --spinner line --title "gomod2nix" -- \
-                gomod2nix
-              nix run .#snekcheck -- "$@"
+              ${inputs.gomod2nix.legacyPackages.${system}.gomod2nix}/bin/gomod2nix && \
+              nix run "$DEVENV_ROOT"#snekcheck -- "$@"
             '';
           };
           unit = {
             description = "Runs all unit tests.";
             exec = ''
-              ${pkgs.gum}/bin/gum spin --show-output --spinner line --title "go test" -- \
-                go test ./...
+              ${goPkg}/bin/go test "$DEVENV_ROOT"/...
             '';
           };
         };
